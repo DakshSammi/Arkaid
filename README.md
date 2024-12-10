@@ -1,127 +1,119 @@
-# ETL Module
+# Arkaid - Game Performance Analytics Platform
 
-This module handles the Extract, Transform, Load (ETL) processes for the Arkaid project, managing data flow between different databases and creating materialized views for efficient analytics.
+![Dashboard](Dashboard.jpeg)
 
-## Overview
+Arkaid is a comprehensive game performance analytics platform developed as part of the Information Integration Architecture course (IIA - CSE656). It employs a data warehouse approach to analyze and integrate gaming data from multiple sources, providing insights through an AI-powered interface.
 
-The ETL module is responsible for:
-- Extracting data from multiple sources
-- Transforming data into standardized formats
-- Loading data into appropriate databases
-- Creating and maintaining materialized views
-- Managing database connections and configurations
+## Project Overview
 
-## Components
+Arkaid combines data from multiple gaming platforms and sources, utilizing ETL processes and materialized views to create a unified analytical platform. The project features natural language query capabilities powered by TogetherAI, enabling users to easily access and analyze gaming performance data.
 
-### Database Connection Management
-- `db_connection.py`: Manages database connections
-- `db_config.yaml`: Configuration file for database connections
-- `.env.example`: Template for environment variables
+## Key Features
 
-### ETL Processes
-- `etl_steam_games.py`: ETL process for Steam games data
-- `etl_epic_games.py`: ETL process for Epic games data
-- `etl_steam_players.py`: ETL process for Steam player data
-- `etl_epic_players.py`: ETL process for Epic player data
-- `etl_content_creators.py`: ETL process for content creator data
-- `etl_developers.py`: ETL process for developer data
-- `etl_modders.py`: ETL process for modder data
-- `etl_publishers.py`: ETL process for publisher data
+- **Multi-Source Data Integration**: Combines data from Steam and Epic Games platforms
+- **Advanced Analytics**: Game performance metrics, player behavior analysis, and content creator insights
+- **Natural Language Queries**: AI-powered conversion of natural language to SQL queries
+- **Real-time Data Processing**: ETL pipelines for continuous data updates
+- **Interactive Interface**: Web-based interface for data exploration and analysis
 
-### Materialized Views
-- `mv_games_warehouse.py`: Manages game-related materialized views
-- `mv_players_warehouse.py`: Manages player-related materialized views
+## Architecture
 
-### Schema Management
-- `schema_matcher.py`: Handles schema matching between different data sources
-- `other_schema_matcher.py`: Additional schema matching functionality
-- `csv_data_sources.py`: Manages CSV data source configurations
+The project is organized into three main modules:
 
-## Directory Structure
+### 1. Data Generation
+Located in `/Data_Generation`
+- Generates and manages gaming-related datasets
+- Creates realistic test data for development and testing
+- Handles data for games, players, developers, publishers, and content creators
+- [More details](Data_Generation/README.md)
 
-```
-ETL/
-├── data/                  # Data files directory
-├── mappings/             # Schema mapping configurations
-├── .env.example          # Environment variables template
-├── db_config.yaml        # Database configuration
-├── data_types.txt        # Data type definitions
-└── ETL process files     # Individual ETL scripts
-```
+### 2. ETL (Extract, Transform, Load)
+Located in `/ETL`
+- Manages data flow between different databases
+- Creates and maintains materialized views
+- Handles schema matching and data transformation
+- Ensures data consistency and integrity
+- [More details](ETL/README.md)
 
-## Configuration
+### 3. Interface
+Located in `/Interface`
+- Provides web-based user interface
+- Integrates TogetherAI for natural language processing
+- Executes and visualizes query results
+- Manages database connections and query optimization
+- [More details](Interface/README.md)
 
-1. Copy `.env.example` to `.env` and fill in database credentials:
+## Database Structure
+
+The project utilizes three PostgreSQL databases:
+1. **DB1**: Epic Games data source
+2. **DB2**: Steam data source
+3. **DB3**: Centralized warehouse with materialized views
+
+## Technologies Used
+
+- **Backend**: Python, PostgreSQL
+- **ETL**: Custom Python ETL framework
+- **Frontend**: Flask, HTML/CSS
+- **AI Integration**: TogetherAI API
+- **Data Processing**: pandas, numpy
+- **Database**: psycopg2, SQLAlchemy
+
+## Setup
+
+1. Clone the repository:
 ```bash
-cp .env.example .env
+git clone https://github.com/lakshaybhushan/Arkaid-IIA.git
+cd Arkaid-IIA
 ```
 
-2. Update `db_config.yaml` with appropriate database configurations:
-```yaml
-databases:
-  - name: DB1
-    host: your_host
-    port: "5432"
-    dbname: your_db
-    username: your_username
-    password: your_password
+2. Set up each module:
+```bash
+# Set up Data Generation
+cd Data_Generation
+pip install -r requirements.txt
+
+# Set up ETL
+cd ../ETL
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Set up Interface
+cd ../Interface
+cp .env.example .env
+# Edit .env with your database and TogetherAI API credentials
+```
+
+3. Configure databases:
+```bash
+cd Interface
+python db_config_generator.py
+python connection_tester.py
+```
+
+4. Start the application:
+```bash
+# In the Interface directory
+python app.py
 ```
 
 ## Usage
 
-### Running ETL Processes
+1. **Data Generation**:
+   - Generate test data using the scripts in the Data_Generation module
+   - Update and maintain data sources as needed
 
-1. For Steam data:
-```bash
-python etl_steam_games.py
-python etl_steam_players.py
-```
+2. **ETL Processes**:
+   - Run ETL scripts to process and transform data
+   - Manage materialized views for optimized queries
 
-2. For Epic data:
-```bash
-python etl_epic_games.py
-python etl_epic_players.py
-```
+3. **Interface**:
+   - Access the web interface at `http://localhost:4321`
+   - Use natural language to query the database
+   - Explore predefined queries and visualizations
 
-3. For other entities:
-```bash
-python etl_content_creators.py
-python etl_developers.py
-python etl_modders.py
-python etl_publishers.py
-```
 
-### Managing Materialized Views
-
-1. Create/update game-related views:
-```bash
-python mv_games_warehouse.py
-```
-
-2. Create/update player-related views:
-```bash
-python mv_players_warehouse.py
-```
-
-## Database Structure
-
-The ETL processes work with three main databases:
-1. DB1: Epic Games data
-2. DB2: Steam data
-3. DB3: Materialized views and consolidated data
-
-## Dependencies
-
-- Python 3.x
-- psycopg2
-- pandas
-- PyYAML
-- python-dotenv
-- SQLAlchemy
-
-## Notes
-
-- ETL processes include error handling and logging
-- Materialized views are automatically refreshed when source data changes
-- Schema matching ensures data consistency across different sources
-- All processes are designed to be idempotent
+## Contributors
+- [Lakshay Bhushan](https://github.com/lakshaybhushan)
+- [Daksh Sammi](https://github.com/dakshsammi)
+- [Sameer Budhiraja](https://github.com/Sameer-Budhiraja)
